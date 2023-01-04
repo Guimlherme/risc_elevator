@@ -4,9 +4,9 @@ use ieee.numeric_std.all;
 
 entity ALU is
     port (
-        a, b: in unsigned;
+        a, b: in unsigned(15 downto 0);
         op: in std_logic_vector(2 downto 0);
-        result: out unsigned
+        result: out unsigned(15 downto 0)
     );
 end ALU;
 
