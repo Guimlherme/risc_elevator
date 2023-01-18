@@ -4,9 +4,9 @@ use ieee.numeric_std.all;
 
 entity ALU is
     port (
-        a, b: in unsigned(15 downto 0);
+        a, b: in unsigned(3 downto 0);
         op: in std_logic_vector(2 downto 0);
-        result: out unsigned(15 downto 0)
+        result: out unsigned(3 downto 0)
     );
 end ALU;
 
@@ -21,8 +21,8 @@ begin
             when "011" => result <= a - 1;
             when "100" => result <= a and b;
             when "101" => result <= a or b;
-				when "110" => result <= nothing; -- correct this later
-            when "111" => result <= nothing; -- correct this later
+				--when "110" => result <= nothing; -- correct this later
+            --when "111" => result <= nothing; -- correct this later
         end case;
     end process;
 end ALU_arch;
