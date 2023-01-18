@@ -19,7 +19,8 @@ begin
             when "001" => result <= std_logic_vector(unsigned(a) - unsigned(c));
 				when "010" => result(0) <= a(unsigned(b)) xnor c(0); -- checks if the floor is called :  a:call list, b:current floor, c:1 to check if florr if called 0 else
             when "011" => result <= c;
-            when "100" => result(0) <= b(0) and((b(1) and (not b(2)) and a(7)) or ((not b(1)) and ((a(6) or a(7)) or ((not b(2)) and a(5)))));
+            when "100" => result(0) <= b(0) and((b(1) and (not b(2)) and a(7)) or ((not b(1)) and ((a(6) or a(7)) or ((not b(2)) and a(5))))) or
+				(not b(0)) and ((a(4) or a(5) or a(6) or a(7)) or ((not(b1)) and ((a(2) or a(3)) or ((not b(2)) and a(1)))) or (b(1) and a(3)));
             when "101" => result <= c;
 				when "110" => result <= a xnor c; -- correct this later
             when "111" => result <= nothing; -- correct this later
