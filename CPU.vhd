@@ -18,6 +18,7 @@
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.all; 
+USE ieee.numeric_std.all;
 
 LIBRARY work;
 
@@ -59,9 +60,9 @@ END COMPONENT;
 
 
 COMPONENT ALU
-	PORT(a, b: in unsigned; -- later decide if it is unsigned or not
-        op: in std_logic_vector(1 downto 0);
-        result: out unsigned
+	PORT(a, b: in unsigned(3 downto 0); -- later decide if it is unsigned or not
+        op: in std_logic_vector(2 downto 0);
+        result: out unsigned(3 downto 0)
 	);
 END COMPONENT;
 
