@@ -22,6 +22,7 @@ end reg;
 
 architecture reg_arch of reg is
 
+
 type reg is array(0 to 7) of std_logic_vector(7 downto 0);
 
 signal Data_reg : reg ;
