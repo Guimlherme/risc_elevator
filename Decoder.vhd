@@ -4,46 +4,112 @@ use ieee.numeric_std.all;
 
 entity decoder is
     port (
-        clk		:	in std_logic;
+        clk	:	in std_logic;
 		  
-        instruction: in unsigned(3 downto 0);
+        instruction: in unsigned(31 downto 0);
 		  
-        jmp: out std_logic;
+        jmp_z: out std_logic;
+		  jmp_reg_z: out std_logic_vector(3 downto 0);
 		  
-		  reg_address: out std_logic_vector(7 downto 0);
-		  alu_out1: out std_logic_vector(3 downto 0);
-		  alu_out2: out std_logic_vector(3 downto 0);
-		  alu_regin1: out std_logic_vector(2 downto 0);
+		  ram_read: out std_logic_vector;
+		  ram_write: out std_logic_vector;
+		  ram_address: out std_logic_vector(7 downto 0);
+		  
+		  reg_write: out std_logic;
+		  reg_write_address: out std_logic_vector(3 downto 0);
+		  
+		  alu_reg_in1: out std_logic_vector(3 downto 0);
+		  alu_reg_in2: out std_logic_vector(3 downto 0);
+		  alu_immediate_in: out std_logic_vector(7 downto 0);
 		  alu_op: out std_logic_vector(2 downto 0)
     );
 end decoder;
 
 architecture decoder_a of decoder is
 
-signal alu1, alu2: std_logic_vector(3 downto 0);
-signal op: std_logic_vector(2 downto 0);
+signal opcode: std_logic_vector(2 downto 0)
+signal reg_dest: out std_logic_vector(3 downto 0);
+signal reg_in1: out std_logic_vector(3 downto 0);
+signal reg_in2: out std_logic_vector(3 downto 0);
+signal immediate_in: out std_logic_vector(7 downto 0);
+
 
 begin
 
--- define signals
--- Decompose the entry
+-- Decompose the entry	
 
-    process(clk)
-    begin
-        case op is
-            when "000" => alu_op <= "00"; -- Increment
-            when "010" => result <= a - b; op = dec -- Decrement
-				when "001" => result <= a + 1; op = nothing -- Set register
-            when "011" => result <= a - 1; -- Conditional jump
-            when "100" => result <= a and b; -- Equals
-            when "101" => result <= a or b; -- Greater than
-				when "110" => result <= nothing; -- Elevator comparison
-            when "111" => result <= nothing; -- Reserved
-        end case;
-    end process;
-	 
-	 alu_out1 <= alu1
-	 alu_out2 <= alu2
-	 alu_op <= op;
+opcode <= instruction(31 downto 29);
+reg_dest <= instruction(28 downto 25);
+alu_in1 <= instruction(24 downto 21);
+alu_in2 <= instruction(20 downto 17);
+alu_in3 <= instruction(16 downto 13);
+alu_in4 <= instruction(12 downto 9);
+
+
+	process(clk)
+	
+	jmp <= '0';
+	ram_read <= '0';
+	reg_write <= '0';
+	
+	alu_op <= opcode;
+	
+	case opcode is
+		
+		when "000" => -- ADD
+			reg_write <= '1';
+			reg_write_address <= reg_dest;
+			
+			alu_reg_in1 <= alu_in1;
+			alu_immediate_in <= alu_in2 & alu_in3;
+			
+			
+		when "001" => -- SUB
+			reg_write <= '1';
+			reg_write_address <= reg_dest;
+			
+			alu_reg_in1 <= alu_in1;
+			alu_immediate_in <= alu_in2 & alu_in3;
+			
+		when "010" => -- FLC
+			reg_write <= '1';
+			reg_write_address <= reg_dest;
+			
+			alu_reg_in1 <= alu_in1;
+			alu_reg_in2 <= alu_in2;
+			alu_immediate_in <= alu_in3 & alu_in4;
+		
+		
+		when "011" => -- MOV
+			reg_write <= '1';
+			reg_write_address <= reg_dest;
+			
+			alu_immediate_in <= alu_in1 & alu_in2;
+			
+		when "100" => -- CAE
+			reg_write <= '1';
+			reg_write_address <= reg_dest;
+			
+			alu_immediate_in <= alu_in1 & alu_in2;
+		
+		when "101" => -- PASS
+			-- Nothing
+		
+		when "110" => -- JMPZ
+			jmp_z <= '1';
+			jmp_reg_z <= reg_dest;
+		
+		when "111" => -- EQ
+			reg_write <= '1';
+			reg_write_address <= reg_dest;
+			
+			alu_reg_in1 <= alu_in1;
+			alu_immediate_in <= alu_in2 & alu_in3;
+		
+		
+		
+	end case;
+	end process;
+ 
 	 
 end decoder_a;
