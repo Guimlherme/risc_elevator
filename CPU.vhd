@@ -48,6 +48,9 @@ COMPONENT seg7_lut
 	);
 END COMPONENT;
 
+BEGIN
+	
+
 COMPONENT dig2dec
 	PORT(vol : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		 seg0 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -60,21 +63,77 @@ END COMPONENT;
 
 
 COMPONENT ALU
-	PORT(a, b: in unsigned(3 downto 0); -- later decide if it is unsigned or not
+	PORT(a, b, c: in std_logic_vector(7 downto 0); -- a and b are the inputs from the register, c is the direct one from the decoder
         op: in std_logic_vector(2 downto 0);
-        result: out unsigned(3 downto 0)
+        result: out std_logic_vector(7 downto 0);
+		  w_enable: out std_logic;
 	);
 END COMPONENT;
 
 COMPONENT reg
-	port(
+	PORT(
 			rw,en		:	in std_logic;
+			w_enable :	in std_logic;
 			clk		:	in std_logic;
-			Adress	:	in std_logic_vector(7 downto 0);
+			Address_w:	in std_logic_vector(3 downto 0);
+			Address_r_1:	in std_logic_vector(3 downto 0);
+			Address_r_2:	in std_logic_vector(3 downto 0);
 			Data_in	:	in std_logic_vector(7 downto 0);
-			Data_out:	out std_logic_vector(7 downto 0)
+			Data_out_1:	out std_logic_vector(7 downto 0);
+			Data_out_2:	out std_logic_vector(7 downto 0);
+			pc	: out std_logic_vector(7 downto 0);
+			
 			);
 END COMPONENT;
+
+BEGIN
+
+u1:	reg port map(Address_w=>reg_write_address, Address_r_1=>alu_reg_in1, 
+                   Address_r_2=>alu_reg_in2, Data_in=>result, w_enable=>w_enable, Data_out_1=>a, Data_out_2=>b,
+						clk=>MAX10_CLK1_50 );
+						 
+
+u2:	ram port map(Adress=>PC_out, Data_out=>instruction,clk=>MAX10_CLK1_50);
+
+u3:	Fetch port map(clk=>MAX10_CLK1_50, PC_out=>Adress, PC_Jump=>jmp ,PC_load=> pc);
+
+u4:	alu port map(clk=>MAX10_CLK1_50, a=>Data_out_1, b=>Data_out_2 ,c=>alu_immediate_in, op=>alu_op, result=>Data_in,	w_enable=>w_enable);
+
+
+
+
+COMPONENT ram
+	PORT(
+			rw,en		:	in std_logic;
+			clk		:	in std_logic;
+			rst		:	in std_logic;
+			Adress	:	in std_logic_vector(7 downto 0);
+			Data_in	:	in std_logic_vector(7 downto 0);
+			Data_out:	out std_logic_vector(31 downto 0)
+			);
+END COMPONENT;
+
+COMPONENT Fetch
+	port(
+			en			:	in std_logic;
+			clk		:	in std_logic;
+			rst		:	in std_logic;
+			PC_load	:	in std_logic;
+			PC_Jump	:	in std_logic_vector(7 downto 0);
+			PC_out	:	out std_logic_vector(7 downto 0)
+			);
+END COMPONENT;
+
+
+COMPONENT Event_Detect
+	port(
+			clk			:	in std_logic;
+			IN_Signal	:	in std_logic;
+			Event_L2H	:	out std_logic;
+			Event_H2L	:	out std_logic
+			);
+END COMPONENT;
+
 
 
 SIGNAL	zero :  STD_LOGIC;
