@@ -54,9 +54,6 @@ COMPONENT seg7_lut
 	);
 END COMPONENT;
 
-BEGIN
-	
-
 COMPONENT dig2dec
 	PORT(vol : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		 seg0 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -66,7 +63,6 @@ COMPONENT dig2dec
 		 seg4 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
 	);
 END COMPONENT;
-
 
 COMPONENT ALU
 	PORT(a, b, c: in std_logic_vector(7 downto 0); -- a and b are the inputs from the register, c is the direct one from the decoder
@@ -78,7 +74,7 @@ END COMPONENT;
 
 COMPONENT reg
 	PORT(
-			rw,en		:	in std_logic;
+			en		:	in std_logic;
 			w_enable :	in std_logic;
 			clk		:	in std_logic;
 			Address_w:	in std_logic_vector(3 downto 0);
@@ -114,7 +110,6 @@ COMPONENT Fetch
 			);
 END COMPONENT;
 
-
 COMPONENT Event_Detect
 	port(
 			clk			:	in std_logic;
@@ -126,10 +121,6 @@ END COMPONENT;
 
 
 -- End of component instantiation
-
-
-
-BEGIN
 
 
 --Signal declarations
@@ -148,6 +139,7 @@ SIGNAL	seg7_in2 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
 SIGNAL	seg7_in3 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
 SIGNAL	seg7_in4 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
 SIGNAL	seg7_in5 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+
 
 
 BEGIN 
