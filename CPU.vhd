@@ -23,6 +23,8 @@ USE ieee.numeric_std.all;
 LIBRARY work;
 
 
+-- Entity declaration
+
 ENTITY CPU IS 
 	PORT
 	(
@@ -39,8 +41,12 @@ ENTITY CPU IS
 	);
 END CPU;
 
+
+
+
 ARCHITECTURE bdf_type OF CPU IS 
 
+-- Component instantiation
 
 COMPONENT seg7_lut
 	PORT(iDIG : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -86,22 +92,6 @@ COMPONENT reg
 			);
 END COMPONENT;
 
-BEGIN
-
-u1:	reg port map(Address_w=>reg_write_address, Address_r_1=>alu_reg_in1, 
-                   Address_r_2=>alu_reg_in2, Data_in=>result, w_enable=>w_enable, Data_out_1=>a, Data_out_2=>b,
-						clk=>MAX10_CLK1_50 );
-						 
-
-u2:	ram port map(Adress=>PC_out, Data_out=>instruction,clk=>MAX10_CLK1_50);
-
-u3:	Fetch port map(clk=>MAX10_CLK1_50, PC_out=>Adress, PC_Jump=>jmp ,PC_load=> pc);
-
-u4:	alu port map(clk=>MAX10_CLK1_50, a=>Data_out_1, b=>Data_out_2 ,c=>alu_immediate_in, op=>alu_op, result=>Data_in,	w_enable=>w_enable);
-
-
-
-
 COMPONENT ram
 	PORT(
 			rw,en		:	in std_logic;
@@ -135,6 +125,15 @@ COMPONENT Event_Detect
 END COMPONENT;
 
 
+-- End of component instantiation
+
+
+
+BEGIN
+
+
+--Signal declarations
+
 
 SIGNAL	zero :  STD_LOGIC;
 SIGNAL	one :  STD_LOGIC;
@@ -154,18 +153,40 @@ SIGNAL	seg7_in5 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 BEGIN 
 
 
+reg:	reg 
+PORT MAP(Address_w=>reg_write_address,
+			Address_r_1=>alu_reg_in1,
+			Address_r_2=>alu_reg_in2,
+			Data_in=>result,
+			w_enable=>w_enable,
+			Data_out_1=>a,
+			Data_out_2=>b,
+			clk=>MAX10_CLK1_50 );
 
-rxa : reg
-PORT MAP(		 vol => "1101010110101010",
-		 seg0 => seg7_in4,
-		 seg1 => seg7_in3,
-		 seg2 => seg7_in2,
-		 seg3 => seg7_in1,
-		 seg4 => seg7_in0);
+
+u2:	ram 
+PORT MAP(Adress=>PC_out,
+		   Data_out=>instruction,
+			clk=>MAX10_CLK1_50);
+
+u3:	Fetch 
+PORT MAP(clk=>MAX10_CLK1_50,
+		   PC_out=>Adress, 
+			PC_Jump=>jmp,
+			PC_load=> pc);
+
+u4:	ALU 
+PORT MAP(clk=>MAX10_CLK1_50,
+			a=>Data_out_1, 
+			b=>Data_out_2,
+			c=>alu_immediate_in, 
+			op=>alu_op, 
+			result=>Data_in,	
+			w_enable=>w_enable);
 
 
-
-
+		 
+-- LED display code
 
 
 b2v_inst : seg7_lut
