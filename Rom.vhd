@@ -8,7 +8,7 @@ entity rom is
 	port(
 			en			:	in std_logic;
 			clk		:	in std_logic;
-			Adrress	:	in std_logic_vector(7 downto 0);
+			Addrress	:	in std_logic_vector(7 downto 0);
 			Data_out:	out std_logic_vector(7 downto 0)
 			);
 end rom;

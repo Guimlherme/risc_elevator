@@ -9,7 +9,7 @@ entity ram is
 			rw,en		:	in std_logic;
 			clk		:	in std_logic;
 			rst		:	in std_logic;
-			Address	:	in std_logic_vector(7 downto 0);
+			Adress	:	in std_logic_vector(7 downto 0);
 			Data_in	:	in std_logic_vector(7 downto 0);
 			Data_out:	out std_logic_vector(7 downto 0)
 			);
