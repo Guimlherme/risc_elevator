@@ -12,9 +12,9 @@ entity decoder is
 		  
         jmp: out std_logic; -- Remember to put jump address in the ALU result
 		  
-		  ram_read: out std_logic_vector;
-		  ram_write: out std_logic_vector;
-		  ram_address: out std_logic_vector(7 downto 0);
+--		  ram_read: out std_logic_vector;
+--		  ram_write: out std_logic_vector;
+--		  ram_address: out std_logic_vector(7 downto 0); -- Won't be necessary for this project
 		  
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);

@@ -68,9 +68,6 @@ ENTITY decoder IS
         instruction: in unsigned(31 downto 0);
 		  alu_zero: in std_logic;
         jmp: out std_logic;
-		  ram_read: out std_logic_vector;
-		  ram_write: out std_logic_vector;
-		  ram_address: out std_logic_vector(7 downto 0);
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);
 		  alu_reg_in1: out std_logic_vector(3 downto 0);
@@ -176,9 +173,6 @@ decoder_inst: decoder IS
         instruction => instruction;
 		  alu_zero => alu_zero;
         jmp => jmp_flag;
-		  ram_read: out std_logic_vector;
-		  ram_write: out std_logic_vector;
-		  ram_address: out std_logic_vector(7 downto 0);
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);
 		  alu_reg_in1: out std_logic_vector(3 downto 0);
