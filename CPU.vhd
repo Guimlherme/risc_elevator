@@ -68,7 +68,6 @@ ENTITY decoder IS
         instruction: in unsigned(31 downto 0);
 		  alu_zero: in std_logic;
         jmp: out std_logic;
-		  jmp_reg: out std_logic_vector(3 downto 0);
 		  ram_read: out std_logic_vector;
 		  ram_write: out std_logic_vector;
 		  ram_address: out std_logic_vector(7 downto 0);
@@ -148,6 +147,8 @@ SIGNAL	instruction : unsigned(31 downto 0);
 
 SIGNAL	result : std_logic_vector(7 downto 0)
 SIGNAL	alu_zero : std_logic;
+SIGNAL	jmp_flag : std_logic;
+
 
 SIGNAL	zero :  STD_LOGIC;
 SIGNAL	one :  STD_LOGIC;
@@ -171,11 +172,10 @@ BEGIN
 
 decoder_inst: decoder IS
     PORT MAP (
-        clk=>MAX10_CLK1_50,
-        instruction=>instruction;
-		  alu_zero=>;
-        jmp: out std_logic;
-		  jmp_reg: out std_logic_vector(3 downto 0);
+        clk => MAX10_CLK1_50,
+        instruction => instruction;
+		  alu_zero => alu_zero;
+        jmp => jmp_flag;
 		  ram_read: out std_logic_vector;
 		  ram_write: out std_logic_vector;
 		  ram_address: out std_logic_vector(7 downto 0);
