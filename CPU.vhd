@@ -68,6 +68,7 @@ ENTITY decoder IS
         instruction: in unsigned(31 downto 0);
 		  alu_zero: in std_logic;
         jmp: out std_logic;
+		  reg_enable: out std_logic;
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);
 		  alu_reg_in1: out std_logic_vector(3 downto 0);
@@ -99,18 +100,15 @@ COMPONENT reg
 			Data_out_1:	out std_logic_vector(7 downto 0);
 			Data_out_2:	out std_logic_vector(7 downto 0);
 			pc	: out std_logic_vector(7 downto 0);
-			
 			);
 END COMPONENT;
 
-COMPONENT ram
+COMPONENT rom
 	PORT(
-			rw,en		:	in std_logic;
 			clk		:	in std_logic;
 			rst		:	in std_logic;
-			Adress	:	in std_logic_vector(7 downto 0);
-			Data_in	:	in std_logic_vector(7 downto 0);
-			Data_out:	out std_logic_vector(31 downto 0)
+			Adrress	:	in std_logic_vector(7 downto 0);
+			Data_out:	out std_logic_vector(7 downto 0)
 			);
 END COMPONENT;
 
@@ -140,11 +138,27 @@ END COMPONENT;
 
 --Signal declarations
 
-SIGNAL	instruction : unsigned(31 downto 0);
+SIGNAL	fetch_enable : std_logic := 1;
+SIGNAL	rom_enable : std_logic := 1;
+SIGNAL	fetch_reset : std_logic := 0;
 
-SIGNAL	result : std_logic_vector(7 downto 0)
-SIGNAL	alu_zero : std_logic;
+SIGNAL	instruction_address : std_logic_vector(7 downto 0);
+SIGNAL	instruction : unsigned(31 downto 0);
+SIGNAL	pc : std_logic_vector(7 downto 0);
+
 SIGNAL	jmp_flag : std_logic;
+SIGNAL	reg_enable : std_logic;
+SIGNAL	reg_write_flag : std_logic;
+SIGNAL	reg_write_address : std_logic_vector(3 downto 0);
+SIGNAL	alu_reg_in1 : out std_logic_vector(3 downto 0);
+SIGNAL	alu_reg_in2 : out std_logic_vector(3 downto 0);
+SIGNAL	alu_immediate_in: out std_logic_vector(7 downto 0);
+SIGNAL	alu_op: out std_logic_vector(2 downto 0);
+
+SIGNAL	alu_data_in1 : std_logic_vector(7 downto 0);
+SIGNAL	alu_data_in2 : std_logic_vector(7 downto 0);
+SIGNAL	alu_result : std_logic_vector(7 downto 0);
+SIGNAL	alu_zero : std_logic;
 
 
 SIGNAL	zero :  STD_LOGIC;
@@ -170,48 +184,53 @@ BEGIN
 decoder_inst: decoder IS
     PORT MAP (
         clk => MAX10_CLK1_50,
-        instruction => instruction;
-		  alu_zero => alu_zero;
-        jmp => jmp_flag;
-		  reg_write: out std_logic;
-		  reg_write_address: out std_logic_vector(3 downto 0);
-		  alu_reg_in1: out std_logic_vector(3 downto 0);
-		  alu_reg_in2: out std_logic_vector(3 downto 0);
-		  alu_immediate_in: out std_logic_vector(7 downto 0);
-		  alu_op: out std_logic_vector(2 downto 0)
-    );
+        instruction => instruction,
+		  alu_zero => alu_zero,
+        jmp => jmp_flag,
+		  reg_enable => reg_enable,
+		  reg_write => reg_write_flag,
+		  reg_write_address => reg_write_address,
+		  alu_reg_in1 => alu_reg_in1,
+		  alu_reg_in2 => alu_reg_in1,
+		  alu_immediate_in => alu_immediate_in,
+		  alu_op: alu_op);
 end decoder;
 
 reg_inst:	reg 
-PORT MAP(Address_w=>reg_write_address,
-			Address_r_1=>alu_reg_in1,
-			Address_r_2=>alu_reg_in2,
-			Data_in=>result,
-			w_enable=>w_enable,
-			Data_out_1=>a,
-			Data_out_2=>b,
-			clk=>MAX10_CLK1_50 );
+PORT MAP(en => reg_enable,
+			w_enable => reg_write_flag,
+			clk => MAX10_CLK1_50,
+			Address_w => reg_write_address,
+			Address_r_1 => alu_reg_in1,
+			Address_r_2 =>alu_reg_in2,
+			Data_in => alu_result,
+			Data_out_1 => alu_data_in1,
+			Data_out_2 => alu_data_in2,
+			pc => pc);
 
 
-ram_inst:	ram 
-PORT MAP(Adress=>PC_out,
-		   Data_out=>instruction,
-			clk=>MAX10_CLK1_50);
+rom_inst:	rom 
+PORT MAP(en	=> rom_enable,
+			clk => MAX10_CLK1_50,
+			Address => instruction_address,
+		   Data_out => instruction);
 
 fetch_inst:	Fetch 
-PORT MAP(clk=>MAX10_CLK1_50,
-		   PC_out=>Adress, 
-			PC_Jump=>jmp,
-			PC_load=> pc);
+PORT MAP(en => fetch_enable,
+			clk => MAX10_CLK1_50,
+			rst => fetch_reset,
+			PC_load=> pc,
+			PC_Jump=> jmp_flag,
+		   PC_out=> instruction_address);
 
 alu_inst:	ALU 
-PORT MAP(a=>Data_out_1, 
-			b=>Data_out_2,
-			c=>alu_immediate_in, 
-			op=>alu_op, 
-			result=>Data_in,
-			zero_flag=>alu_zero,
-			w_enable=>w_enable);
+PORT MAP(a => alu_data_in1, 
+			b => alu_data_in2,
+			c => alu_immediate_in, 
+			op => alu_op, 
+			result => alu_result,
+			zero_flag => alu_zero,
+			w_enable => reg_write_flag);
 
 			
 

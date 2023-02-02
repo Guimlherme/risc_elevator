@@ -16,6 +16,7 @@ entity decoder is
 --		  ram_write: out std_logic_vector;
 --		  ram_address: out std_logic_vector(7 downto 0); -- Won't be necessary for this project
 		  
+		  reg_enable: out std_logic;
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);
 		  
@@ -54,6 +55,7 @@ begin
 
 		jmp <= '0';
 		ram_read <= '0';
+		reg_enable <= '1';
 		reg_write <= '0';
 
 		alu_op <= opcode;
