@@ -7,6 +7,7 @@ entity ALU is
         a, b, c: in std_logic_vector(7 downto 0); -- a and b are the inputs from the register, c is the direct one from the decoder
         op: in std_logic_vector(2 downto 0);
         result: out std_logic_vector(7 downto 0); -- result is directly put according to the write adress coming out of the decoder
+		  zero_flag: out std_logic
 		  w_enable : out std_logic
     );
 end ALU;		
@@ -30,6 +31,11 @@ begin
 				w_enable <= '0';
 		  else
 				w_enable <= '1';
+		  end if;
+		  if (result = "00000000") then
+				zero_flag <= '1'
+		  else
+				zero_flag <= '0'
 		  end if;
     end process;
 end ALU_arch;

@@ -86,6 +86,7 @@ COMPONENT ALU
 	PORT(a, b, c: in std_logic_vector(7 downto 0); -- a and b are the inputs from the register, c is the direct one from the decoder
         op: in std_logic_vector(2 downto 0);
         result: out std_logic_vector(7 downto 0);
+		  zero_flag: out std_logic
 		  w_enable: out std_logic;
 	);
 END COMPONENT;
@@ -145,7 +146,8 @@ END COMPONENT;
 
 SIGNAL	instruction : unsigned(31 downto 0);
 
-SIGNAL	result : 
+SIGNAL	result : std_logic_vector(7 downto 0)
+SIGNAL	alu_zero : std_logic;
 
 SIGNAL	zero :  STD_LOGIC;
 SIGNAL	one :  STD_LOGIC;
@@ -171,8 +173,9 @@ decoder_inst: decoder IS
     PORT MAP (
         clk=>MAX10_CLK1_50,
         instruction=>instruction;
-        jmp_z: out std_logic;
-		  jmp_reg_z: out std_logic_vector(3 downto 0);
+		  alu_zero=>;
+        jmp: out std_logic;
+		  jmp_reg: out std_logic_vector(3 downto 0);
 		  ram_read: out std_logic_vector;
 		  ram_write: out std_logic_vector;
 		  ram_address: out std_logic_vector(7 downto 0);
@@ -208,12 +211,12 @@ PORT MAP(clk=>MAX10_CLK1_50,
 			PC_load=> pc);
 
 alu_inst:	ALU 
-PORT MAP(clk=>MAX10_CLK1_50,
-			a=>Data_out_1, 
+PORT MAP(a=>Data_out_1, 
 			b=>Data_out_2,
 			c=>alu_immediate_in, 
 			op=>alu_op, 
-			result=>Data_in,	
+			result=>Data_in,
+			zero_flag=>alu_zero,
 			w_enable=>w_enable);
 
 			
