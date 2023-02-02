@@ -8,8 +8,10 @@ entity decoder is
 		  
         instruction: in unsigned(31 downto 0);
 		  
-        jmp_z: out std_logic;
-		  jmp_reg_z: out std_logic_vector(3 downto 0);
+		  alu_zero: in std_logic;
+		  
+        jmp: out std_logic;
+		  jmp_reg: out std_logic_vector(3 downto 0);
 		  
 		  ram_read: out std_logic_vector;
 		  ram_write: out std_logic_vector;
@@ -96,8 +98,12 @@ alu_in4 <= instruction(12 downto 9);
 			-- Nothing
 		
 		when "110" => -- JMPZ
-			jmp_z <= '1';
-			jmp_reg_z <= reg_dest;
+			if alu_zero = '1' then
+				jmp <= '1';
+			else
+				jmp <= '0';
+			end if;
+			jmp_reg <= reg_dest;
 		
 		when "111" => -- EQ
 			reg_write <= '1';
@@ -105,7 +111,8 @@ alu_in4 <= instruction(12 downto 9);
 			
 			alu_reg_in1 <= alu_in1;
 			alu_immediate_in <= alu_in2 & alu_in3;
-		
+			
+		when others => NULL;
 		
 		
 	end case;

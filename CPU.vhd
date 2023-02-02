@@ -37,11 +37,9 @@ ENTITY CPU IS
 		HEX4 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		HEX5 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		LEDR :  OUT  STD_LOGIC_VECTOR(9 DOWNTO 0)	
-		
 	);
+
 END CPU;
-
-
 
 
 ARCHITECTURE bdf_type OF CPU IS 
@@ -63,6 +61,26 @@ COMPONENT dig2dec
 		 seg4 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
 	);
 END COMPONENT;
+
+ENTITY decoder IS
+    PORT (
+        clk	:	in std_logic;
+        instruction: in unsigned(31 downto 0);
+		  alu_zero: in std_logic;
+        jmp: out std_logic;
+		  jmp_reg: out std_logic_vector(3 downto 0);
+		  ram_read: out std_logic_vector;
+		  ram_write: out std_logic_vector;
+		  ram_address: out std_logic_vector(7 downto 0);
+		  reg_write: out std_logic;
+		  reg_write_address: out std_logic_vector(3 downto 0);
+		  alu_reg_in1: out std_logic_vector(3 downto 0);
+		  alu_reg_in2: out std_logic_vector(3 downto 0);
+		  alu_immediate_in: out std_logic_vector(7 downto 0);
+		  alu_op: out std_logic_vector(2 downto 0)
+    );
+end decoder;
+
 
 COMPONENT ALU
 	PORT(a, b, c: in std_logic_vector(7 downto 0); -- a and b are the inputs from the register, c is the direct one from the decoder
@@ -125,6 +143,9 @@ END COMPONENT;
 
 --Signal declarations
 
+SIGNAL	instruction : unsigned(31 downto 0);
+
+SIGNAL	result : 
 
 SIGNAL	zero :  STD_LOGIC;
 SIGNAL	one :  STD_LOGIC;
@@ -144,8 +165,27 @@ SIGNAL	seg7_in5 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 
 BEGIN 
 
+-- Component instantiation inside the concurrent statements
 
-reg:	reg 
+decoder_inst: decoder IS
+    PORT MAP (
+        clk=>MAX10_CLK1_50,
+        instruction=>instruction;
+        jmp_z: out std_logic;
+		  jmp_reg_z: out std_logic_vector(3 downto 0);
+		  ram_read: out std_logic_vector;
+		  ram_write: out std_logic_vector;
+		  ram_address: out std_logic_vector(7 downto 0);
+		  reg_write: out std_logic;
+		  reg_write_address: out std_logic_vector(3 downto 0);
+		  alu_reg_in1: out std_logic_vector(3 downto 0);
+		  alu_reg_in2: out std_logic_vector(3 downto 0);
+		  alu_immediate_in: out std_logic_vector(7 downto 0);
+		  alu_op: out std_logic_vector(2 downto 0)
+    );
+end decoder;
+
+reg_inst:	reg 
 PORT MAP(Address_w=>reg_write_address,
 			Address_r_1=>alu_reg_in1,
 			Address_r_2=>alu_reg_in2,
@@ -156,18 +196,18 @@ PORT MAP(Address_w=>reg_write_address,
 			clk=>MAX10_CLK1_50 );
 
 
-u2:	ram 
+ram_inst:	ram 
 PORT MAP(Adress=>PC_out,
 		   Data_out=>instruction,
 			clk=>MAX10_CLK1_50);
 
-u3:	Fetch 
+fetch_inst:	Fetch 
 PORT MAP(clk=>MAX10_CLK1_50,
 		   PC_out=>Adress, 
 			PC_Jump=>jmp,
 			PC_load=> pc);
 
-u4:	ALU 
+alu_inst:	ALU 
 PORT MAP(clk=>MAX10_CLK1_50,
 			a=>Data_out_1, 
 			b=>Data_out_2,
@@ -176,9 +216,10 @@ PORT MAP(clk=>MAX10_CLK1_50,
 			result=>Data_in,	
 			w_enable=>w_enable);
 
+			
 
 		 
--- LED display code
+-- LED display components
 
 
 b2v_inst : seg7_lut
