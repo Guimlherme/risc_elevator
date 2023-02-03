@@ -19,11 +19,16 @@ type rom is array(0 to 255) of std_logic_vector(31 downto 0);
 
 signal Data_Rom : rom ;
 
--- Code here
 
 
 --------------- BEGIN -----------------------------------------------------------------
 begin
+
+-- Code here
+
+Data_Rom(0) <= "10100000000000000000000000000000";
+Data_Rom(1) <= "10100000000000000000000000000000";
+
 -- rw='1' alors lecture
 	acces_rom:process(clk)
 		begin
