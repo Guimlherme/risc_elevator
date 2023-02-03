@@ -10,7 +10,8 @@ entity decoder is
 		  
 		  alu_zero: in std_logic;
 		  
-        jmp: out std_logic; -- Remember to put jump address in the ALU result
+        jmp: out std_logic;
+		  jmp_dest:  out std_logic_vector(7 downto 0);
 		  
 --		  ram_read: out std_logic_vector;
 --		  ram_write: out std_logic_vector;
@@ -106,7 +107,7 @@ begin
 				else
 					jmp <= '0';
 				end if;
-				alu_reg_in1 <= reg_dest;
+				jmp_dest <= reg_dest & alu_in1;
 			
 			when "111" => -- AND
 				reg_write <= '1';
