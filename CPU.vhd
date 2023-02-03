@@ -36,8 +36,11 @@ ENTITY CPU IS
 		HEX3 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		HEX4 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		HEX5 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		debug1 : OUT STD_LOGIC_VECTOR(15 downto 0);
-		debug2 : OUT STD_LOGIC_VECTOR(7 downto 0);
+		debug_pc : OUT STD_LOGIC_VECTOR(7 downto 0);
+		debug_jmp : OUT STD_LOGIC;
+		debug_disp : OUT STD_LOGIC_VECTOR(15 downto 0);
+		debug_alu_result : OUT STD_LOGIC_VECTOR(7 downto 0);
+		debug_alu_imm : OUT STD_LOGIC_VECTOR(7 downto 0);
 		LEDR :  OUT  STD_LOGIC_VECTOR(9 DOWNTO 0)	
 	);
 
@@ -70,7 +73,6 @@ COMPONENT decoder IS
         instruction: in std_logic_vector(22 downto 0);
 		  alu_zero: in std_logic;
         jmp: out std_logic;
-		  reg_enable: out std_logic;
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);
 		  alu_reg_in1: out std_logic_vector(3 downto 0);
@@ -91,7 +93,6 @@ END COMPONENT;
 
 COMPONENT reg
 	PORT(
-			en		:	in std_logic;
 			w_enable :	in std_logic;
 			clk		:	in std_logic;
 			SW :  IN  STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -146,10 +147,8 @@ SIGNAL	fetch_reset : std_logic := '0';
 
 SIGNAL	instruction_address : std_logic_vector(7 downto 0) := "00000000";
 SIGNAL	instruction : std_logic_vector(22 downto 0) := "10100000000000000000000";
-SIGNAL	pc : std_logic_vector(7 downto 0) := "00000000";
 
 SIGNAL	jmp_flag : std_logic;
-SIGNAL	reg_enable : std_logic;
 SIGNAL	reg_write_flag : std_logic;
 SIGNAL	reg_write_address : std_logic_vector(3 downto 0);
 SIGNAL	alu_reg_in1 : std_logic_vector(3 downto 0);
@@ -183,8 +182,11 @@ SIGNAL	seg7_in5 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 BEGIN 
 
 -- Component instantiation inside the concurrent statements
-debug1 <= display_number;
-debug2 <= alu_immediate_in;
+debug_pc <= instruction_address;
+debug_jmp <= jmp_flag;
+debug_disp <= display_number;
+debug_alu_imm <= alu_immediate_in;
+debug_alu_result <= alu_result;
 
 decoder_inst:	decoder
     PORT MAP (
@@ -192,7 +194,6 @@ decoder_inst:	decoder
         instruction => instruction,
 		  alu_zero => alu_zero,
         jmp => jmp_flag,
-		  reg_enable => reg_enable,
 		  reg_write => reg_write_flag,
 		  reg_write_address => reg_write_address,
 		  alu_reg_in1 => alu_reg_in1,
@@ -201,8 +202,7 @@ decoder_inst:	decoder
 		  alu_op => alu_op);
 
 reg_inst:	reg 
-PORT MAP(en => reg_enable,
-			w_enable => reg_write_flag,
+PORT MAP(w_enable => reg_write_flag,
 			clk => MAX10_CLK1_50,
 			SW => SW,
 			Address_w => reg_write_address,
@@ -225,7 +225,7 @@ PORT MAP(en => fetch_enable,
 			clk => MAX10_CLK1_50,
 			rst => fetch_reset,
 			PC_load=> jmp_flag,
-			PC_Jump=> alu_result,
+			PC_Jump=> alu_data_in1, -- receives data from the register
 		   PC_out=> instruction_address);
 
 alu_inst:	ALU 

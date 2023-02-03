@@ -6,7 +6,6 @@ Use ieee.numeric_std.all ;
 
 entity reg is
 	port(
-			en		:	in std_logic;
 			w_enable :  in std_logic;
 			clk		:	in std_logic;
 			SW :  IN  STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -38,12 +37,8 @@ Display_out <= Data_reg(14) & Data_reg(15);
 		if rising_edge(clk) then
 --			Data_reg(0) <= std_logic_vector(unsigned(Data_reg(0)) + 1); -- implementation du program counter
 --			pc <= Data_reg(0); -- pc was moved to fetch
-			if en='1' then
-				Data_out_1 <= Data_reg(to_integer(unsigned(Address_r_1)));
-				Data_out_2 <= Data_reg(to_integer(unsigned(Address_r_2)));
-				if w_enable='1' then
-					Data_reg(to_integer(unsigned(Address_w))) <= Data_in;
-				end if;
+			if w_enable='1' then
+				Data_reg(to_integer(unsigned(Address_w))) <= Data_in;
 			end if;
 			if SW(0) = '1' then
 				Data_reg(1)(5) <= '0';
@@ -53,4 +48,7 @@ Display_out <= Data_reg(14) & Data_reg(15);
 		
 	end process acces_reg;
 
+	Data_out_1 <= Data_reg(to_integer(unsigned(Address_r_1)));
+	Data_out_2 <= Data_reg(to_integer(unsigned(Address_r_2)));
+	
 end reg_arch;

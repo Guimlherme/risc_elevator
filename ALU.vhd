@@ -32,7 +32,7 @@ result_out <= result;
 								  result(7 downto 1) <= "0000000";
             when "101" => result <= c;
 				when "110" => result <= c; 
-            when "111" => result <= a xnor c;
+            when "111" => result <= a and c;
 				when others => NULL;
         end case;
 		  if (result = "00000000") then

@@ -16,7 +16,6 @@ entity decoder is
 --		  ram_write: out std_logic_vector;
 --		  ram_address: out std_logic_vector(7 downto 0); -- Won't be necessary for this project
 		  
-		  reg_enable: out std_logic;
 		  reg_write: out std_logic;
 		  reg_write_address: out std_logic_vector(3 downto 0);
 		  
@@ -55,7 +54,6 @@ begin
 		if rising_edge(clk) then
 
 		jmp <= '0';
-		reg_enable <= '1';
 		reg_write <= '0';
 
 		alu_op <= opcode;
@@ -101,7 +99,7 @@ begin
 			when "101" => -- PASS
 				-- Nothing
 			
-			when "110" => -- JMPZ
+			when "110" => -- JMPZ -- All jumps need 3 clock cycles to complete
 				if alu_zero = '1' then
 					jmp <= '1';
 				else
@@ -109,7 +107,7 @@ begin
 				end if;
 				alu_reg_in1 <= reg_dest;
 			
-			when "111" => -- EQ
+			when "111" => -- AND
 				reg_write <= '1';
 				reg_write_address <= reg_dest;
 				
