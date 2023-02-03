@@ -24,11 +24,11 @@ result_out <= result;
         case op is
             when "000" => result <= std_logic_vector(unsigned(a) + unsigned(c));
             when "001" => result <= std_logic_vector(unsigned(a) - unsigned(c));
-				when "010" => result(0) <= (a(to_integer(unsigned(b))) xnor c(0)); -- checks if the floor is called :  a:call list, b:current floor, c:1 to check if florr if called 0 else
+				when "010" => result(0) <= (a(to_integer(unsigned(b(2 downto 0)))) xnor c(0)); -- checks if the floor is called :  a:call list, b:current floor, c:1 to check if florr if called 0 else
 								  result(7 downto 1) <= "0000000";
             when "011" => result <= c;
-            when "100" => result(0) <= ((b(0) and ((b(1) and (not b(2)) and a(7)) or ((not b(1)) and (((a(6)) or (a(7))) or ((not b(2)) and a(5))))))or 
-				((not b(0)) and ((a(4) or a(5) or a(6) or a(7)) or ((not(b(1))) and ((a(2) or a(3)) or ((not b(2)) and a(1)))) or (b(1) and a(3)))));
+            when "100" => result(0) <= ((b(2) and ((b(1) and (not b(0)) and a(7)) or ((not b(1)) and (((a(6)) or (a(7))) or ((not b(0)) and a(5))))))or 
+				((not b(2)) and ((a(4) or a(5) or a(6) or a(7)) or ((not(b(1))) and ((a(2) or a(3)) or ((not b(0)) and a(1)))) or (b(1) and a(3)))));
 								  result(7 downto 1) <= "0000000";
             when "101" => result <= c;
 				when "110" => result <= c; 

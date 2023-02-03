@@ -29,7 +29,7 @@ signal Data_reg : reg := (others => (others => '0')) ;
 --------------- BEGIN -----------------------------------------------------------------
 begin
 
-Display_out <= Data_reg(14) & Data_reg(15);
+Display_out <= Data_reg(0) & (Data_reg(1) and "00000111");
 
 	acces_reg:process(clk)
 		begin
@@ -39,9 +39,6 @@ Display_out <= Data_reg(14) & Data_reg(15);
 --			pc <= Data_reg(0); -- pc was moved to fetch
 			if w_enable='1' then
 				Data_reg(to_integer(unsigned(Address_w))) <= Data_in;
-			end if;
-			if SW(0) = '1' then
-				Data_reg(1)(5) <= '0';
 			end if;
 			Data_reg(2) <= SW(8 downto 1);
 		end if;

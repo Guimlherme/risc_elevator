@@ -1,0 +1,102 @@
+MOV R1 2
+MOV R2 0
+ m
+MOV R3 x !!!!!!!
+AND R4 R1 12
+JMPZ R3
+ e
+MOV R3 f !!!!!!!
+AND R4 R1 8
+JMPZ R3
+ k
+MOV R3 l !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+
+
+
+ x 
+SUB R1 R1 1
+MOV R3 y !!!!!!!
+FLC R4 R2 R1 0
+JMPZ R3
+ z
+MOV R3 a !!!!!!!
+AND R4 R1 7
+JMPZ R3
+ d
+MOV R3 x !!!!!!!
+AND R4 R1 12
+JMPZ R3
+MOV R3 e !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+ y 
+MOV R3 y !!!!!!!
+FLC R4 R2 R1 0
+JMPZ R3
+MOV R3 z !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+ a
+MOV R3 b !!!!!!!
+CAE R4 R2 R1
+JMPZ R3
+ADD R1 R1 4
+MOV R3 d !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+ b 
+ADD R1 R1 8
+MOV R3 d !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+
+
+
+ f
+ADD R1 R1 1
+MOV R3 g !!!!!!!
+FLC R4 R2 R1 0
+JMPZ R3
+ h
+MOV R3 i !!!!!!!
+CAE R4 R2 R1
+JMPZ R3
+ j
+MOV R3 k !!!!!!!
+AND R4 R1 12
+JMPZ R3
+MOV R3 f !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+ g 
+MOV R3 g !!!!!!!
+FLC R4 R2 R1 0
+JMPZ R3
+MOV R3 h !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+ i
+SUB R1 R1 4
+MOV R3 j !!!!!!!
+ADD R4 0 0
+JMPZ R3
+
+
+
+ l
+MOV R3 l !!!!!!!!
+CAE R4 R2 R1
+JMPZ R3
+ADD R1 R1 4
+MOV R3 m !!!!!!!
+ADD R4 0 0
+JMPZ R3

@@ -4,17 +4,62 @@
   
 # Using readlines()
 file_r = open('input.txt', 'r')
-Lines = file_r.readlines()
 file_w = open('output.txt', 'w')
 
-
+Lines = file_r.readlines()
 gotos = {}
+counter = 0
+for line in Lines:
+    line = line.strip().rstrip("\n").upper()
+    words = line.split(' ')
+    opcode = words[0]
+    if opcode == "":
+        continue
+    match opcode:
+        case 'ADD':
+            counter += 1
+        case 'SUB':
+            counter += 1
+        case 'FLC':
+            counter += 1
+        case 'MOV':
+            counter += 1
+        case 'CAE':
+            counter += 1
+        case 'PASS':
+            counter += 1
+        case 'JMPZ':
+            counter += 1
+            counter += 1
+            counter += 1
+        case 'AND':
+            counter += 1
+        case 'GOTO':
+            counter += 1
+            counter += 1
+            counter += 1
+            counter += 1
+        case 'GOTOZ':
+            counter += 1
+            counter += 1
+            counter += 1
+        case other:
+            gotos[opcode.rstrip(":")] = counter
+
+
+
+print("Gotos:", gotos)
+
+file_r = open('input.txt', 'r')
+Lines = file_r.readlines()
 counter = 0
 for line in Lines:
     line = line.strip().rstrip("\n").upper()
     words = line.split(' ')
     print(words)
     opcode = words[0]
+    if opcode == "":
+        continue
     match opcode:
         case 'ADD':
             dest = int(words[1][1:])
@@ -44,7 +89,7 @@ for line in Lines:
             dest = int(words[1][1:])
             r1 = int(words[2][1:])
             r2 = int(words[3][1:])
-            file_w.write('Data_Rom({:d}) <= \"100{:04b}{:04b}{:04b}0000\";\n'.format(counter,dest,r1,r2))
+            file_w.write('Data_Rom({:d}) <= \"100{:04b}{:04b}{:04b}00000000\";\n'.format(counter,dest,r1,r2))
             counter += 1
         case 'PASS':
             file_w.write('Data_Rom({:d}) <= \"10100000000000000000000\";\n'.format(counter))
@@ -82,7 +127,7 @@ for line in Lines:
             file_w.write('Data_Rom({:d}) <= \"10100000000000000000000\";\n'.format(counter))
             counter += 1
         case other:
-            gotos[opcode.rstrip(":")] = counter
+            assert(gotos[opcode.rstrip(":")] == counter)
 
 
 

@@ -1,7 +1,74 @@
-test:
-MOV R5 1
-test2:
-ADD R15 R5 8
-goto test2
-test3:
-MOV R15 4
+begin:
+MOV R1 16
+MOV R2 0
+
+check_descend_ascend:
+AND R4 R1 24
+GOTOZ descend
+AND R4 R1 16
+GOTOZ ascend
+
+stopped:
+GOTO check_calls_from_stopped
+
+
+descend:
+SUB R1 R1 1
+FLC R4 R2 R1 0
+GOTOZ desc_open_doors
+
+check_lowest_floor:
+AND R4 R1 7 
+GOTOZ stop_lowest_floor
+
+check_continue_descending:
+AND R4 R1 24
+GOTOZ descend
+GOTO check_descend_ascend
+
+desc_open_doors:
+FLC R4 R2 R1 0
+GOTOZ desc_open_doors
+GOTO check_lowest_floor
+
+stop_lowest_floor:
+CAE R4 R2 R1
+GOTOZ stop_descending
+ADD R1 R1 8
+GOTO check_continue_descending
+
+stop_descending:
+ADD R1 R1 16
+GOTO check_descend_ascend
+
+
+ascend:
+ADD R1 R1 1
+FLC R4 R2 R1 0
+GOTOZ asc_open_doors
+
+
+check_start_descending_from_ascending:
+CAE R4 R2 R1
+GOTOZ start_descending_from_ascending
+
+check_continue_ascending:
+AND R4 R1 24
+GOTOZ check_descend_ascend
+GOTO ascend
+
+asc_open_doors:
+FLC R4 R2 R1 0
+GOTOZ asc_open_doors
+GOTO check_start_descending_from_ascending
+
+start_descending_from_ascending:
+SUB R1 R1 8
+GOTO check_continue_ascending
+
+
+check_calls_from_stopped:
+CAE R4 R2 R1
+GOTOZ check_calls_from_stopped
+SUB R1 R1 8
+GOTO check_descend_ascend
