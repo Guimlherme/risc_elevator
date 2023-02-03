@@ -41,12 +41,12 @@ begin
 
 	-- Decompose the entry	
 
-	opcode <= instruction(31 downto 29);
-	reg_dest <= instruction(28 downto 25);
-	alu_in1 <= instruction(24 downto 21);
-	alu_in2 <= instruction(20 downto 17);
-	alu_in3 <= instruction(16 downto 13);
-	alu_in4 <= instruction(12 downto 9);
+	opcode <= instruction(22 downto 20);
+	reg_dest <= instruction(19 downto 16);
+	alu_in1 <= instruction(15 downto 12);
+	alu_in2 <= instruction(11 downto 8);
+	alu_in3 <= instruction(7 downto 4);
+	alu_in4 <= instruction(3 downto 0);
 
 
 	decode:process(clk)

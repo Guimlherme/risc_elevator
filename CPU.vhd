@@ -83,8 +83,7 @@ COMPONENT ALU
 	PORT(a, b, c: in std_logic_vector(7 downto 0); -- a and b are the inputs from the register, c is the direct one from the decoder
         op: in std_logic_vector(2 downto 0);
         result_out: out std_logic_vector(7 downto 0);
-		  zero_flag: out std_logic;
-		  w_enable: out std_logic
+		  zero_flag: out std_logic
 		  );
 END COMPONENT;
 
@@ -99,7 +98,8 @@ COMPONENT reg
 			Address_r_2:	in std_logic_vector(3 downto 0);
 			Data_in	:	in std_logic_vector(7 downto 0);
 			Data_out_1:	out std_logic_vector(7 downto 0);
-			Data_out_2:	out std_logic_vector(7 downto 0)
+			Data_out_2:	out std_logic_vector(7 downto 0);
+			Display_out: out std_logic_vector(15 downto 0)
 			);
 END COMPONENT;
 
@@ -163,6 +163,7 @@ SIGNAL	alu_zero : std_logic;
 
 SIGNAL	zero :  STD_LOGIC;
 SIGNAL	one :  STD_LOGIC;
+SIGNAL	display_number: STD_LOGIC_VECTOR(15 downto 0);
 SIGNAL	HEX_out0 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	HEX_out1 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	HEX_out2 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -205,7 +206,8 @@ PORT MAP(en => reg_enable,
 			Address_r_2 =>alu_reg_in2,
 			Data_in => alu_result,
 			Data_out_1 => alu_data_in1,
-			Data_out_2 => alu_data_in2);
+			Data_out_2 => alu_data_in2,
+			Display_out => display_number);
 
 
 rom_inst:	rom 
@@ -228,8 +230,7 @@ PORT MAP(a => alu_data_in1,
 			c => alu_immediate_in, 
 			op => alu_op, 
 			result_out => alu_result,
-			zero_flag => alu_zero,
-			w_enable => reg_write_flag);
+			zero_flag => alu_zero);
 
 			
 
@@ -264,7 +265,7 @@ PORT MAP(iDIG => seg7_in4,
 
 
 b2v_inst5 : dig2dec
-PORT MAP(		 vol => "1101010110101010",
+PORT MAP(		 vol => display_number,
 		 seg0 => seg7_in4,
 		 seg1 => seg7_in3,
 		 seg2 => seg7_in2,

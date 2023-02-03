@@ -9,7 +9,7 @@ entity rom is
 			en			:	in std_logic;
 			clk		:	in std_logic;
 			Address	:	in std_logic_vector(7 downto 0);
-			Data_out:	out std_logic_vector(31 downto 0)
+			Data_out:	out std_logic_vector(22 downto 0)
 			);
 end rom;
 
@@ -28,7 +28,9 @@ begin
 
 Data_Rom(0) <= "10100000000000000000000";
 Data_Rom(1) <= "10100000000000000000000";
-Data_Rom(2) <= "01111100100000000000000"
+Data_Rom(2) <= "01111100100000000000000";
+Data_Rom(3) <= "10100000000000000000000";
+Data_Rom(4) <= "10100000000000000000000";
 
 -- rw='1' alors lecture
 	acces_rom:process(clk)
