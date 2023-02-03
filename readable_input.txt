@@ -1,71 +1,102 @@
 MOV R1 2
 MOV R2 0
-MOV R3 12
+ m
+MOV R3 x !!!!!!!
 AND R4 R1 12
 JMPZ R3
-MOV R3 42
+ e
+MOV R3 f !!!!!!!
 AND R4 R1 8
 JMPZ R3
-MOV R3 65
+ k
+MOV R3 l !!!!!!!
 ADD R4 0 0
 JMPZ R3
+
+
+
+
+ x 
 SUB R1 R1 1
-MOV R3 25
+MOV R3 y !!!!!!!
 FLC R4 R2 R1 0
 JMPZ R3
-MOV R3 31
+ z
+MOV R3 a !!!!!!!
 AND R4 R1 7
 JMPZ R3
-MOV R3 12
+ d
+MOV R3 x !!!!!!!
 AND R4 R1 12
 JMPZ R3
-MOV R3 6
+MOV R3 e !!!!!!!
 ADD R4 0 0
 JMPZ R3
-MOV R3 25
+
+ y 
+MOV R3 y !!!!!!!
 FLC R4 R2 R1 0
 JMPZ R3
-MOV R3 16
+MOV R3 z !!!!!!!
 ADD R4 0 0
 JMPZ R3
-MOV R3 38
+
+ a
+MOV R3 b !!!!!!!
 CAE R4 R2 R1
 JMPZ R3
 ADD R1 R1 4
-MOV R3 19
+MOV R3 d !!!!!!!
 ADD R4 0 0
 JMPZ R3
+
+ b 
 ADD R1 R1 8
-MOV R3 19
+MOV R3 d !!!!!!!
 ADD R4 0 0
 JMPZ R3
+
+
+
+
+ f
 ADD R1 R1 1
-MOV R3 55
+MOV R3 g !!!!!!!
 FLC R4 R2 R1 0
 JMPZ R3
-MOV R3 61
+ h
+MOV R3 i !!!!!!!
 CAE R4 R2 R1
 JMPZ R3
-MOV R3 9
+ j
+MOV R3 k !!!!!!!
 AND R4 R1 12
 JMPZ R3
-MOV R3 42
+MOV R3 f !!!!!!!
 ADD R4 0 0
 JMPZ R3
-MOV R3 55
+
+ g 
+MOV R3 g !!!!!!!
 FLC R4 R2 R1 0
 JMPZ R3
-MOV R3 46
+MOV R3 h !!!!!!!
 ADD R4 0 0
 JMPZ R3
+
+ i
 SUB R1 R1 4
-MOV R3 49
+MOV R3 j !!!!!!!
 ADD R4 0 0
 JMPZ R3
-MOV R3 65
+
+
+
+ l
+MOV R3 l !!!!!!!!
 CAE R4 R2 R1
 JMPZ R3
 ADD R1 R1 4
-MOV R3 3
+MOV R3 m !!!!!!!
 ADD R4 0 0
 JMPZ R3
