@@ -1,71 +1,74 @@
+begin:
 MOV R1 2
 MOV R2 0
-MOV R3 12
-AND R4 R1 12
-JMPZ R3
-MOV R3 42
-AND R4 R1 8
-JMPZ R3
-MOV R3 65
-ADD R4 0 0
-JMPZ R3
+
+check_descend_ascend:
+AND R4 R1 24
+GOTOZ descend
+AND R4 R1 16
+GOTOZ ascend
+
+stopped:
+GOTO check_calls_from_stopped
+
+
+descend:
 SUB R1 R1 1
-MOV R3 25
 FLC R4 R2 R1 0
-JMPZ R3
-MOV R3 31
-AND R4 R1 7
-JMPZ R3
-MOV R3 12
-AND R4 R1 12
-JMPZ R3
-MOV R3 6
-ADD R4 0 0
-JMPZ R3
-MOV R3 25
+GOTOZ desc_open_doors
+
+check_lowest_floor:
+AND R4 R1 7 
+GOTOZ stop_lowest_floor
+
+check_continue_descending:
+AND R4 R1 24
+GOTOZ descend
+GOTO check_descend_ascend
+
+desc_open_doors:
 FLC R4 R2 R1 0
-JMPZ R3
-MOV R3 16
-ADD R4 0 0
-JMPZ R3
-MOV R3 38
+GOTOZ desc_open_doors
+GOTO check_lowest_floor
+
+stop_lowest_floor:
 CAE R4 R2 R1
-JMPZ R3
-ADD R1 R1 4
-MOV R3 19
-ADD R4 0 0
-JMPZ R3
+GOTOZ stop_descending
 ADD R1 R1 8
-MOV R3 19
-ADD R4 0 0
-JMPZ R3
+GOTO check_continue_descending
+
+stop_descending:
+ADD R1 R1 8
+GOTO check_continue_descending
+
+
+ascend:
 ADD R1 R1 1
-MOV R3 55
 FLC R4 R2 R1 0
-JMPZ R3
-MOV R3 61
+GOTOZ asc_open_doors
+
+
+check_start_descending_from_ascending:
 CAE R4 R2 R1
-JMPZ R3
-MOV R3 9
-AND R4 R1 12
-JMPZ R3
-MOV R3 42
-ADD R4 0 0
-JMPZ R3
-MOV R3 55
+GOTOZ start_descending_from_ascending
+
+check_continue_ascending:
+AND R4 R1 24
+GOTOZ check_descend_ascend
+GOTO ascend
+
+asc_open_doors:
 FLC R4 R2 R1 0
-JMPZ R3
-MOV R3 46
-ADD R4 0 0
-JMPZ R3
-SUB R1 R1 4
-MOV R3 49
-ADD R4 0 0
-JMPZ R3
-MOV R3 65
+GOTOZ asc_open_doors
+GOTO check_start_descending_from_ascending
+
+start_descending_from_ascending:
+SUB R1 R1 8
+GOTO check_continue_ascending
+
+
+check_calls_from_stopped:
 CAE R4 R2 R1
-JMPZ R3
-ADD R1 R1 4
-MOV R3 3
-ADD R4 0 0
-JMPZ R3
+GOTOZ check_calls_from_stopped
+SUB R1 R1 8
+GOTO check_descend_ascend
