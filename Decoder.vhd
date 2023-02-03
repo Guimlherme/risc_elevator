@@ -6,7 +6,7 @@ entity decoder is
     port (
         clk	:	in std_logic;
 		  
-        instruction: in unsigned(31 downto 0);
+        instruction: in std_logic_vector(31 downto 0);
 		  
 		  alu_zero: in std_logic;
 		  
@@ -29,11 +29,12 @@ end decoder;
 
 architecture decoder_a of decoder is
 
-signal opcode: std_logic_vector(2 downto 0)
-signal reg_dest: out std_logic_vector(3 downto 0);
-signal reg_in1: out std_logic_vector(3 downto 0);
-signal reg_in2: out std_logic_vector(3 downto 0);
-signal immediate_in: out std_logic_vector(7 downto 0);
+signal opcode: std_logic_vector(2 downto 0);
+signal reg_dest: std_logic_vector(3 downto 0);
+signal alu_in1: std_logic_vector(3 downto 0);
+signal alu_in2: std_logic_vector(3 downto 0);
+signal alu_in3: std_logic_vector(3 downto 0);
+signal alu_in4: std_logic_vector(3 downto 0);
 
 
 begin
@@ -54,7 +55,6 @@ begin
 		if rising_edge(clk) then
 
 		jmp <= '0';
-		ram_read <= '0';
 		reg_enable <= '1';
 		reg_write <= '0';
 

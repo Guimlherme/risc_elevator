@@ -39,9 +39,9 @@ begin
 			if rising_edge(clk) then
 				if en='1' then
 					if(rw='1') then 
-						Data_out <= Data_Ram(to_integer(unsigned(Adress)));
+						Data_out <= Data_Ram(to_integer(unsigned(Address)));
 					else
-						Data_Ram(to_integer(unsigned(Adress))) <= Data_in;
+						Data_Ram(to_integer(unsigned(Address))) <= Data_in;
 					end if;
 				end if;
 			end if;
