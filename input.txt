@@ -1,0 +1,7 @@
+test:
+MOV R5 1
+test2:
+ADD R15 R5 8
+goto test2
+test3:
+MOV R15 4
