@@ -36,11 +36,6 @@ ENTITY CPU IS
 		HEX3 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		HEX4 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		HEX5 :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		debug_pc : OUT STD_LOGIC_VECTOR(7 downto 0);
-		debug_jmp : OUT STD_LOGIC;
-		debug_disp : OUT STD_LOGIC_VECTOR(15 downto 0);
-		debug_alu_result : OUT STD_LOGIC_VECTOR(7 downto 0);
-		debug_alu_imm : OUT STD_LOGIC_VECTOR(7 downto 0);
 		LEDR :  OUT  STD_LOGIC_VECTOR(9 DOWNTO 0)	
 	);
 
@@ -184,11 +179,6 @@ SIGNAL	seg7_in5 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 BEGIN 
 
 -- Component instantiation inside the concurrent statements
-debug_pc <= instruction_address;
-debug_jmp <= jmp_flag;
-debug_disp <= display_number;
-debug_alu_imm <= alu_immediate_in;
-debug_alu_result <= alu_result;
 
 decoder_inst:	decoder
     PORT MAP (
