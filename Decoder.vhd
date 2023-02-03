@@ -94,7 +94,8 @@ begin
 				reg_write <= '1';
 				reg_write_address <= reg_dest;
 				
-				alu_immediate_in <= alu_in1 & alu_in2;
+				alu_reg_in1 <= alu_in1;
+				alu_reg_in2 <= alu_in2;
 			
 			when "101" => -- PASS
 				-- Nothing
