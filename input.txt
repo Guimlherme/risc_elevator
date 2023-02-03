@@ -1,5 +1,5 @@
 begin:
-MOV R1 2
+MOV R1 16
 MOV R2 0
 
 check_descend_ascend:
@@ -38,8 +38,8 @@ ADD R1 R1 8
 GOTO check_continue_descending
 
 stop_descending:
-ADD R1 R1 8
-GOTO check_continue_descending
+ADD R1 R1 16
+GOTO check_descend_ascend
 
 
 ascend:
