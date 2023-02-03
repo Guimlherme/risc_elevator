@@ -25,7 +25,7 @@ architecture reg_arch of reg is
 
 type reg is array(0 to 15) of std_logic_vector(7 downto 0);
 
-signal Data_reg : reg ;
+signal Data_reg : reg := (others => (others => '0')) ;
 
 --------------- BEGIN -----------------------------------------------------------------
 begin
