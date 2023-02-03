@@ -65,7 +65,7 @@ END COMPONENT;
 COMPONENT decoder IS
     PORT (
         clk	:	in std_logic;
-        instruction: in std_logic_vector(31 downto 0);
+        instruction: in std_logic_vector(22 downto 0);
 		  alu_zero: in std_logic;
         jmp: out std_logic;
 		  reg_enable: out std_logic;
@@ -108,7 +108,7 @@ COMPONENT rom
 			en			:	in std_logic;
 			clk		:	in std_logic;
 			Address	:	in std_logic_vector(7 downto 0);
-			Data_out:	out std_logic_vector(31 downto 0)
+			Data_out:	out std_logic_vector(22 downto 0)
 			);
 END COMPONENT;
 
@@ -143,7 +143,7 @@ SIGNAL	rom_enable : std_logic := '1';
 SIGNAL	fetch_reset : std_logic := '0';
 
 SIGNAL	instruction_address : std_logic_vector(7 downto 0) := "00000000";
-SIGNAL	instruction : std_logic_vector(31 downto 0) := "10100000000000000000000000000000";
+SIGNAL	instruction : std_logic_vector(22 downto 0) := "10100000000000000000000";
 SIGNAL	pc : std_logic_vector(7 downto 0) := "00000000";
 
 SIGNAL	jmp_flag : std_logic;

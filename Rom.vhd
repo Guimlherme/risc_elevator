@@ -15,7 +15,7 @@ end rom;
 
 architecture rom_a of rom is
 
-type rom is array(0 to 255) of std_logic_vector(31 downto 0);
+type rom is array(0 to 255) of std_logic_vector(22 downto 0);
 
 signal Data_Rom : rom ;
 
@@ -26,8 +26,9 @@ begin
 
 -- Code here
 
-Data_Rom(0) <= "10100000000000000000000000000000";
-Data_Rom(1) <= "10100000000000000000000000000000";
+Data_Rom(0) <= "10100000000000000000000";
+Data_Rom(1) <= "10100000000000000000000";
+Data_Rom(2) <= "01111100100000000000000"
 
 -- rw='1' alors lecture
 	acces_rom:process(clk)

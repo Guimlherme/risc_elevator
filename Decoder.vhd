@@ -6,7 +6,7 @@ entity decoder is
     port (
         clk	:	in std_logic;
 		  
-        instruction: in std_logic_vector(31 downto 0);
+        instruction: in std_logic_vector(22 downto 0);
 		  
 		  alu_zero: in std_logic;
 		  

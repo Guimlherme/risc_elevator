@@ -16,17 +16,18 @@ entity reg is
 			Data_in	:	in std_logic_vector(7 downto 0);
 			Data_out_1:	out std_logic_vector(7 downto 0); -- value a in ALU
 			Data_out_2:	out std_logic_vector(7 downto 0); -- value b in ALU
+			Display_out: out std_logic_vector(15 downto 0); -- the two last registers (14,15) go to the display
 	);
 end reg;
 
 architecture reg_arch of reg is
 
 
-type reg is array(0 to 7) of std_logic_vector(7 downto 0);
+type reg is array(0 to 15) of std_logic_vector(7 downto 0);
 
 signal Data_reg : reg ;
 
-
+Display_out <= Data_reg(14) & Data_reg(15);
 
 --------------- BEGIN -----------------------------------------------------------------
 begin
